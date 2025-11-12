@@ -1,0 +1,11 @@
+# 所有文件默认由仓库所有者负责评审
+*       @Joker9405
+
+# data/seed.csv 需要负责人必审
+data/seed.csv  @Joker9405
+
+# 文档同样由负责人评审
+docs/*   @Joker9405
+
+# 可根据需要添加其他维护者或路径：
+# contrib/inbox/*  @Joker9405 @another-maintainer

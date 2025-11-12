@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 贡献条款（CLA）
+    url: ./../docs/CONTRIBUTION_CLA.md
+    about: 贡献前请先阅读并同意
+  - name: 使用许可（数据）
+    url: ./../docs/LICENSE_USAGE.md
+    about: 数据使用与授权说明
