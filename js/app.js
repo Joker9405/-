@@ -515,35 +515,7 @@ function renderCandidateBar(ids) {
       // 用户选择具体 zhh 后，进入图二界面
       resetUI();
       clearCandidateBar();
-      
-    if (ids.length) {
-        // Display matched lexeme
-        const lex = LEX[ids[0]];
-        renderPhased(lex);
-    } else {
-        // If no match is found, call the Gemini API fallback
-        fetch('/api/translate_fallback?q=' + encodeURIComponent(q))
-            .then(response => response.json())
-            .then(data => {
-                if (data.ok && data.items && data.items.length > 0) {
-                    const item = data.items[0];
-                    const lex = {
-                        zhh: item.zhh || '（未收录：你可以提交更地道嘅讲法）',
-                        alias_zhh: item.alias_zhh || '',
-                        note_chs: item.note_chs || '',
-                        note_en: item.note_en || ''
-                    };
-                    renderPhased(lex);
-                } else {
-                    renderEmpty();  // In case fallback returns no results
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching fallback data:', error);
-                renderEmpty();
-            });
-    }
-    
+      renderPhased(lex);
     });
 
     candidateBar.appendChild(btn);
@@ -710,35 +682,7 @@ qInput.addEventListener('input', e => {
 
   if (ids.length === 1) {
     const lex = LEX[ids[0]];
-    
-    if (ids.length) {
-        // Display matched lexeme
-        const lex = LEX[ids[0]];
-        renderPhased(lex);
-    } else {
-        // If no match is found, call the Gemini API fallback
-        fetch('/api/translate_fallback?q=' + encodeURIComponent(q))
-            .then(response => response.json())
-            .then(data => {
-                if (data.ok && data.items && data.items.length > 0) {
-                    const item = data.items[0];
-                    const lex = {
-                        zhh: item.zhh || '（未收录：你可以提交更地道嘅讲法）',
-                        alias_zhh: item.alias_zhh || '',
-                        note_chs: item.note_chs || '',
-                        note_en: item.note_en || ''
-                    };
-                    renderPhased(lex);
-                } else {
-                    renderEmpty();  // In case fallback returns no results
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching fallback data:', error);
-                renderEmpty();
-            });
-    }
-    
+    renderPhased(lex);
     return;
   }
 

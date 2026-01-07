@@ -1,3 +1,15 @@
+// api/translate_fallback.js
+// Gemini fallback endpoint (CommonJS).
+// Env:
+//   GEMINI_API_KEY   (required)  - Google AI Studio key
+//   GEMINI_MODEL     (optional)  - default: gemini-2.5-flash
+//
+// Request:
+//   GET  /api/translate_fallback?q=...
+//   POST /api/translate_fallback  { "q": "...", "lang": "en|chs|mix|auto" }
+//
+// Response:
+//   { ok:true, source:"gemini", model, input, yue }
 
 const https = require('https');
 
@@ -117,40 +129,16 @@ module.exports = async (req, res) => {
       return;
     }
 
-    const item = {
-      id: 'CT-FALLBACK',
-      zhh: out.text || '（未收錄：你可以提交更地道嘅講法）',
-      zhh_pron: '',
-      alias_zhh: '',
-      alias_zhh_r18: '',
-      chs: '',
-      en: '',
-      note_chs: '',
-      note_en: '',
-      variants_chs: '',
-      variants_en: '',
-      examples: [],
-      _fallback_error: null,
-    };
-
     res.statusCode = 200;
-    res.end(JSON.stringify({
-      ok: true,
-      from: 'gemini-fallback',
-      model,
-      query: input,
-      count: 1,
-      items: [item],
-    }));
-
-    // Insert into Supabase (user_contrib or telemetry_zero table)
-    const { user_contrib } = require('./supabaseClient');  // Assuming you have supabaseClient for insertion
-    await user_contrib.insert({
-      query: input,
-      suggestion: out.text,
-      status: 'pending',  // or 'approved' depending on your logic
-    });
-
+    res.end(
+      JSON.stringify({
+        ok: true,
+        source: 'gemini',
+        model,
+        input,
+        yue: out.text,
+      }),
+    );
   } catch (e) {
     res.statusCode = 500;
     res.end(JSON.stringify({ ok: false, error: String(e && e.message ? e.message : e) }));
